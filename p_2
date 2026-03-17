@@ -1,0 +1,81 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Node structure
+struct Node {
+    int data;
+    struct Node* prev;
+    struct Node* next;
+};
+
+struct Node* head = NULL;
+
+// Insert at end
+void insertEnd(int x) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = x;
+    newNode->next = NULL;
+
+    if (head == NULL) {
+        newNode->prev = NULL;
+        head = newNode;
+        return;
+    }
+
+    struct Node* temp = head;
+    while (temp->next != NULL) {
+        temp = temp->next;
+    }
+
+    temp->next = newNode;
+    newNode->prev = temp;
+}
+
+// Delete last node
+void deleteLast() {
+    if (head == NULL)
+        return;
+
+    struct Node* temp = head;
+
+    // Only one node
+    if (temp->next == NULL) {
+        free(temp);
+        head = NULL;
+        return;
+    }
+
+    // Traverse to last node
+    while (temp->next != NULL) {
+        temp = temp->next;
+    }
+
+    temp->prev->next = NULL;
+    free(temp);
+}
+
+// Print list
+void display() {
+    struct Node* temp = head;
+    while (temp != NULL) {
+        printf("%d", temp->data);
+        if (temp->next != NULL)
+            printf(" ");
+        temp = temp->next;
+    }
+}
+
+int main() {
+    int n, x;
+    scanf("%d", &n);
+
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &x);
+        insertEnd(x);
+    }
+
+    deleteLast();   // remove last element
+    display();      // print result
+
+    return 0;
+}
